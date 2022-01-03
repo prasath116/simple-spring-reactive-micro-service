@@ -1,0 +1,21 @@
+server:
+  port: 8062
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
+      
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+springdoc:
+  packagesToScan: com.prs.services.department
+info:
+  app:
+    name: ${spring.application.name}
+    version: ${project.version}
+    encoding: ${project.build.sourceEncoding}
+    java:
+      version: ${java.version}
