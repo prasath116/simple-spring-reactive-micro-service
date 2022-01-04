@@ -21,6 +21,7 @@
 	<modules>
 		<module>discovery-service</module>
 		<module>config-service</module>
+		<module>config-service-repo</module>
 		<module>employee-service</module>
 		<module>department-service</module>
 		<module>college-service</module>
