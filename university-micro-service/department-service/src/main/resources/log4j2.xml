@@ -55,12 +55,12 @@
 			<AppenderRef ref="applicationLog" />
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="com.prs.services.department.aop.ClientLoggingAspect"
+		<Logger name="com.prs.services.aop.ClientLoggingAspect"
 			additivity="false" level="info">
 			<AppenderRef ref="requestresponselog" />
 			<AppenderRef ref="console" />
 		</Logger>
-		<Logger name="com.prs.services.department.aop.ExternalLoggingAspect"
+		<Logger name="com.prs.services.aop.ExternalLoggingAspect"
 			additivity="false" level="info">
 			<AppenderRef ref="externallog" />
 			<AppenderRef ref="console" />
