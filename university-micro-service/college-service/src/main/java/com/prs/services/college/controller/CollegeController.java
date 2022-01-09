@@ -29,19 +29,19 @@ public class CollegeController {
 	@Autowired
 	EmployeeClient employeeClient;
 	
-	@PostMapping
+	@PostMapping("/add")
 	public College add(@RequestBody CollegeEntity college) {
 		LOGGER.info("College add: {}", college);
 		return service.save(college);
 	}
 	
-	@GetMapping
+	@GetMapping("/findAll")
 	public List<College> findAll() {
 		LOGGER.info("College find");
 		return service.findAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/get-by/{id}")
 	public College findById(@PathVariable("id") Long id) {
 		LOGGER.info("College find: id={}", id);
 		return service.findById(id);

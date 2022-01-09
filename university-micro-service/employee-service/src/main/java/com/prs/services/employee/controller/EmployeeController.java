@@ -24,19 +24,19 @@ public class EmployeeController {
 	@Autowired
 	IEmployeeService service;
 	
-	@PostMapping("/")
+	@PostMapping("/add")
 	public Mono<Employee> add(@RequestBody EmployeeEntity employee) {
 		LOGGER.info("Employee add: {}", employee);
 		return service.save(employee);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/get-by/{id}")
 	public Mono<Employee> findById(@PathVariable("id") Long id) {
 		LOGGER.info("Employee find: id={}", id);
 		return service.findById(id);
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/findAll")
 	public Flux<Employee> findAll() {
 		LOGGER.info("Employee find");
 		return service.findAll();
