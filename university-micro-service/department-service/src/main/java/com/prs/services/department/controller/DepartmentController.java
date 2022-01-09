@@ -33,19 +33,19 @@ public class DepartmentController {
 	@Autowired
 	private EmployeeReactiveClient employeeReactiveClient;
 	
-	@PostMapping("/")
+	@PostMapping("/add")
 	public Mono<Department> add(@RequestBody DepartmentEntity department) {
 		LOGGER.info("Department add: {}", department);
 		return service.save(department);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/get-by/{id}")
 	public Mono<Department> findById(@PathVariable("id") Long id) {
 		LOGGER.info("Department find: id={}", id);
 		return service.findById(id);
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/findAll")
 	public Flux<Department> findAll() {
 		LOGGER.info("Department find"+testVal);
 		return service.findAll();
