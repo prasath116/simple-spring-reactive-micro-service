@@ -1,9 +1,8 @@
-package com.prs.services.student;
+package com.prs.services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -17,25 +16,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
 @EnableSwagger2
 @OpenAPIDefinition(info =
-	@Info(title = "Student API", version = "1.0", description = "Documentation Student API v1.0")
+	@Info(title = "Employee API", version = "1.0", description = "Documentation Employee API v1.0")
 )
-public class StudentServiceApplication {
+public class StudentApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StudentServiceApplication.class, args);
+		SpringApplication.run(StudentApplication.class, args);
 	}
 
 	@Bean
 	public Docket swaggerPersonApi10() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-					.apis(RequestHandlerSelectors.basePackage("com.prs.services.student.controller"))
+					.apis(RequestHandlerSelectors.basePackage("com.prs.services.employee.controller"))
 					.paths(PathSelectors.any())
 				.build()
-				.apiInfo(new ApiInfoBuilder().version("1.0").title("Student API").description("Documentation Student API v1.0").build());
+				.apiInfo(new ApiInfoBuilder().version("1.0").title("Employee API").description("Documentation Employee API v1.0").build());
 	}
 	
 }
