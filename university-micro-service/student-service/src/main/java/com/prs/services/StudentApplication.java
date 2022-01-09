@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableDiscoveryClient
 @EnableSwagger2
 @OpenAPIDefinition(info =
-	@Info(title = "Employee API", version = "1.0", description = "Documentation Employee API v1.0")
+	@Info(title = "Student API", version = "1.0", description = "Documentation Student API v1.0")
 )
 public class StudentApplication {
 
@@ -30,10 +30,10 @@ public class StudentApplication {
 	public Docket swaggerPersonApi10() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-					.apis(RequestHandlerSelectors.basePackage("com.prs.services.employee.controller"))
+					.apis(RequestHandlerSelectors.basePackage("com.prs.services.student.controller"))
 					.paths(PathSelectors.any())
 				.build()
-				.apiInfo(new ApiInfoBuilder().version("1.0").title("Employee API").description("Documentation Employee API v1.0").build());
+				.apiInfo(new ApiInfoBuilder().version("1.0").title("Student API").description("Documentation Student API v1.0").build());
 	}
 	
 }
