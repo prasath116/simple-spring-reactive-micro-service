@@ -1,4 +1,4 @@
-package com.prs.services.employee.model;
+package com.prs.services.student.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Employee {
+public class Student {
 
 	private Long id;
 	private Long collegeId;

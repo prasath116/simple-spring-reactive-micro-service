@@ -1,4 +1,4 @@
-package com.prs.services.department.entity;
+package com.prs.services.student.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,15 +9,18 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@Entity(name = "Department")
-@Table(name = "Department")
+@Entity(name = "Student")
+@Table(name = "Student")
 @ToString
-public class DepartmentEntity {
+public class StudentEntity {
 
 	@Id
 	private Long id;
 	private String name;
-	
+	private int age;
+
 	@Column(name = "college_id")
 	private Long collegeId;
+	@Column(name = "department_id")
+	private Long departmentId;
 }

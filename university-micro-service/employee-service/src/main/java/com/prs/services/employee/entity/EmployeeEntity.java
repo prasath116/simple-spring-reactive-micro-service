@@ -1,6 +1,8 @@
 package com.prs.services.employee.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -12,11 +14,15 @@ import lombok.ToString;
 @ToString
 public class EmployeeEntity {
 
+	@Id
 	private Long id;
-	private Long collegeId;
-	private Long departmentId;
 	private String name;
 	private int age;
 	private String position;
+	
+	@Column(name = "college_id")
+	private Long collegeId;
+	@Column(name = "department_id")
+	private Long departmentId;
 
 }
