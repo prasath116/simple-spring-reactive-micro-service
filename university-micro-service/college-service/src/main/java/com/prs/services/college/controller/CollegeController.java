@@ -23,11 +23,11 @@ public class CollegeController {
 	private static final Logger LOGGER = LogManager.getLogger(CollegeController.class);
 	
 	@Autowired
-	ICollegeService service;
+	private ICollegeService service;
 	@Autowired
-	DepartmentClient departmentClient;
+	private DepartmentClient departmentClient;
 	@Autowired
-	EmployeeClient employeeClient;
+	private EmployeeClient employeeClient;
 	
 	@PostMapping("/add")
 	public College add(@RequestBody CollegeEntity college) {

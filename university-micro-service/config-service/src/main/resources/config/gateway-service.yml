@@ -35,6 +35,12 @@ spring:
         - Path=/college/**
         filters:
         - RewritePath=/college/(?<path>.*), /$\{path}
+      - id: student-service
+        uri: lb://student-service
+        predicates:
+        - Path=/student/**
+        filters:
+        - RewritePath=/student/(?<path>.*), /$\{path}
       - id: openapi
         uri: http://localhost:${server.port}
         predicates:
