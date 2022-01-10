@@ -1,9 +1,14 @@
 package com.prs.services.aop;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,99 +16,112 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prs.services.aop.ExternalLog.ExternalLogBuilder;
+import com.prs.services.aop.AspectLog.AspectLogBuilder;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
 @Aspect
 @Component
-public class ExternalLoggingAspect {
-    private static final Logger LOGGER = LogManager.getLogger(ExternalLoggingAspect.class);
-    
-    @Autowired
-	private ObjectMapper mapper;
-    
+public class ExternalLoggingAspect extends AbstractLogger {
+    final Logger LOGGER = LogManager.getLogger(ExternalLoggingAspect.class);
+
     @Pointcut("execution(public * *(..))") //this should work for the public pointcut
     private void anyPublicOperation() {}
 
     @Pointcut("@within(org.springframework.cloud.openfeign.FeignClient)") //this should work for the annotation service pointcut
-    private void inService() {}
+    private void inFeignClient() {}
 
-    @Around("anyPublicOperation() && inService()")
+    @Around("anyPublicOperation() && inFeignClient()")
     public Object externalLogFeign(ProceedingJoinPoint joinPoint) throws Throwable {
-    	//Can add log similar to externalLog
-    	return joinPoint.proceed();
-    }
-
-    @Around(value = "execution(public * com.prs.services.*.client.ExternalClient.*(..))")  
-    public Object externalLog(ProceedingJoinPoint joinPoint) throws Throwable {
-//    	final StringBuilder sb = new StringBuilder();
-    	final ExternalLogBuilder builder = ExternalLog.builder();
-    	Mono<String> respMono = null;
+    	final AspectLogBuilder builder = AspectLog.builder();
+    	Mono<Object> respMono = null;
     	try {
     		long start = System.currentTimeMillis();
     		Object res = joinPoint.proceed();
     		long end = System.currentTimeMillis() - start;
-    		List<Object> argList = Arrays.asList(Optional.of(joinPoint.getArgs()).orElse(new String[] {""}));
+    		builder.timeTaken(end);
     		
-			String uri = argList.isEmpty() ? "" : (String) argList.get(0);
-			Map<String, String> headers = argList.size() < 2 ? null : (Map<String, String>) argList.get(1);
-			builder.headers(headers).uri(uri).timeTaken(end);
-//			sb.append(end).append("ms taken for request - uri :").append(uri)
-//			.append("headers : ").append(headers);
-			if(argList.size() > 3) 
-			{
-//				sb.append(" body : ").append(argList.get(3));
-				builder.requestBody(argList.get(3));
-			}
-//			sb.append(" response ");
-			
-    		if(res instanceof Flux) {
-    			respMono = ((Flux<?>) res).collectList().map(o-> {
-    				return getJsonString(o);
-    			});
-    		} else if(res instanceof Mono) {
-    			respMono = ((Mono<?>) res).map(o-> {
-    				return getJsonString(o);
-    			});
-    		} else if(res instanceof String) {
-    			respMono = Mono.just(res.toString());
-    		} else {
-    			respMono = Mono.just(getJsonString(res));
-    		}
+    		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+    	    Method method = signature.getMethod();
+    	    Object[] args = joinPoint.getArgs();
+    	    Parameter[] params = method.getParameters();
+    	    if(args != null && params != null && args.length == params.length) {
+    	    	IntStream.range(0, params.length).forEach(i-> {
+    	    		Parameter param = params[i];
+    	    		Arrays.asList(param.getAnnotations()).forEach(paramAnnotation-> {
+        	    		if(paramAnnotation instanceof PathVariable) {
+        	    			PathVariable m = (PathVariable) paramAnnotation;
+            	    		builder.pathVariable(m.value(), args[i]);
+            	    	} else if(paramAnnotation instanceof RequestBody) {
+            	    		builder.requestBody(args[i]);
+            	    	}
+        	    	});
+    	    	});
+    	    }
+    	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    		builder.path(request.getServletPath());
+    		builder.headers(getHttpHeaders(request));
+    		
+    		respMono = getResponseMono(res);
     		return res;
 		} catch (Exception e) {
 			
 		} finally {
 			respMono.subscribe(s -> {
-//				sb.append(s);
-//				log(sb.toString());
 				builder.responseBody(s);
-				log(getJsonString(builder.build()));
-				log(builder.build().toString());
+				log(getJsonString(builder.build())); //Json format
+				log(builder.build().toString()); //log format
 			});
 			
 		}
 		return null;
     }
 
-	private String getJsonString(Object l) {
-		try {
-			return mapper.writeValueAsString(l);
-		} catch (JsonProcessingException e) {
-			return e.getMessage();
+	@Around(value = "execution(public * com.prs.services.*.client.ExternalClient.*(..))")  
+    public Object externalLog(ProceedingJoinPoint joinPoint) throws Throwable {
+    	final AspectLogBuilder builder = AspectLog.builder();
+    	Mono<Object> respMono = null;
+    	try {
+    		long start = System.currentTimeMillis();
+    		Object res = joinPoint.proceed();
+    		long end = System.currentTimeMillis() - start;
+    		List<Object> argList = Arrays.asList(Optional.ofNullable(joinPoint.getArgs()).orElse(new String[] {""}));
+    		
+			builder.timeTaken(end)
+					.path(argList.isEmpty() ? "" : (String) argList.get(0))
+					.headers(argList.size() < 2 ? null : (HttpHeaders) argList.get(1))
+					.requestBody(argList.size() > 3 ? argList.get(3):null);
+			
+    		respMono = getResponseMono(res);
+    		return res;
+		} catch (Exception e) {
+			
+		} finally {
+			respMono.subscribe(s -> {
+				builder.responseBody(s);
+				log(getJsonString(builder.build())); //Json format
+				log(builder.build().toString()); //log format
+			});
+			
 		}
-	}
-
-	private void log(String s) {
-		LOGGER.info(s);
+		return null;
+    }
+	
+	@Override
+	Logger getLogger() {
+		return LOGGER;
 	}
     
 }

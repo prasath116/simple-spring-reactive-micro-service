@@ -1,8 +1,5 @@
 package com.prs.services.department.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -34,9 +31,9 @@ public class EmployeeReactiveClient {
 
 	}
 
-	private Map<String, String> getDefaultHeaders() {
-		Map<String, String> h = new HashMap<>();
-		h.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+	private HttpHeaders getDefaultHeaders() {
+		HttpHeaders h = new HttpHeaders();
+		h.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		return h;
 	}
 

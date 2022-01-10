@@ -19,44 +19,48 @@ import reactor.core.publisher.Mono;
 public class ExternalClient {
 	private WebClient client;
 
-	public <T> Mono<T> getForMono(String uri, Map<String, String> httpHeaders, Class<T> resClazz) {
-		return getClientResponse(uri, httpHeaders)
+	public <T> Mono<T> getForMono(String path, HttpHeaders httpHeaders, Class<T> resClazz) {
+		return getClientResponse(path, httpHeaders)
 				.flatMap(r -> r.bodyToMono(resClazz));
 	}
 
-	public <T> Flux<T> getForFlux(String uri, Map<String, String> httpHeaders, Class<T> resClazz) {
-		return getClientResponse(uri, httpHeaders)
+	public <T> Flux<T> getForFlux(String path, HttpHeaders httpHeaders, Class<T> resClazz) {
+		return getClientResponse(path, httpHeaders)
 				.flatMapMany(r -> r.bodyToFlux(resClazz));
 
 	}
 
-	public <T, U> Mono<U> postForMono(String uri, Map<String, String> httpHeaders, Class<U> resClazz,
+	public <T, U> Mono<U> postForMono(String path, HttpHeaders httpHeaders, Class<U> resClazz,
 			T reqBody, Class<T> reqClazz) {
-		return postForResponse(uri, httpHeaders, reqBody, reqClazz)
+		return postForResponse(path, httpHeaders, reqBody, reqClazz)
 				.flatMap(r -> r.bodyToMono(resClazz));
 	}
 
-	public <T, U> Flux<U> postForFlux(String uri, Map<String, String> httpHeaders, T reqBody, Class<T> reqClazz,
+	public <T, U> Flux<U> postForFlux(String path, HttpHeaders httpHeaders, T reqBody, Class<T> reqClazz,
 			Class<U> resClazz) {
-		return postForResponse(uri, httpHeaders, reqBody, reqClazz)
+		return postForResponse(path, httpHeaders, reqBody, reqClazz)
 				.flatMapMany(r -> r.bodyToFlux(resClazz));
 
 	}
 	
-	private <T> Mono<ClientResponse> postForResponse(String uri, Map<String, String> httpHeaders, T reqBody,
+	private <T> Mono<ClientResponse> postForResponse(String path, HttpHeaders httpHeaders, T reqBody,
 			Class<T> reqClazz) {
 		return client.post()
-				.uri(uri)
+				.uri(path)
 				.headers(headerConsumer(httpHeaders))
 				.body(Mono.just(reqBody), reqClazz)
 				.exchange();
 	}
 	
-	private Mono<ClientResponse> getClientResponse(String uri, Map<String, String> httpHeaders) {
+	private Mono<ClientResponse> getClientResponse(String path, HttpHeaders httpHeaders) {
 		return client.get()
-				.uri(uri)
+				.uri(path)
 				.headers(headerConsumer(httpHeaders))
 				.exchange();
+	}
+	
+	private Consumer<HttpHeaders> headerConsumer(HttpHeaders httpHeaders) {
+		return h -> h.putAll(httpHeaders);
 	}
 	
 	private Consumer<HttpHeaders> headerConsumer(Map<String, String> httpHeaders) {
