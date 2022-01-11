@@ -35,12 +35,6 @@ public class WebClientConfig {
 		return client;
 	}
 	
-	@Bean
-	@Qualifier("externalClient")
-	public ExternalClient getExternalClient() {
-		return new ExternalClient(getEmployeeWebClient());
-	}
-
 	ExchangeFilterFunction logFilter = (request, next) -> {
 		System.out.println("Request body : "+logRequest(request));
 		Mono<ClientResponse> clientResponse = next.exchange(request);
@@ -85,11 +79,6 @@ public class WebClientConfig {
 		} else {
 			System.out.println("Success :"+response.statusCode());
 		}
-		/*
-		 * return response.bodyToFlux(Employee.class).collectList().map(l-> {
-		 * System.out.println("res : "+l); return response; });
-		 */
-//		System.out.println("res : "+extractResponseBody(response));
 		return Mono.just(response);
 	}
 	

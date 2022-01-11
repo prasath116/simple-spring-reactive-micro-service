@@ -1,5 +1,7 @@
 package com.prs.services.department.controller;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,8 @@ public class DepartmentController {
 
 	private static final Logger LOGGER = LogManager.getLogger(DepartmentController.class);
 	
-	@Value("${test:default}")
-	private String testVal;
+	@Value("${environment.details}")
+	private String environmentDetails;
 	
 	@Autowired
 	private IDepartmentService service;
@@ -47,7 +49,6 @@ public class DepartmentController {
 	
 	@GetMapping("/findAll")
 	public Flux<Department> findAll() {
-		LOGGER.info("Department find"+testVal);
 		return service.findAll();
 	}
 	
@@ -74,5 +75,9 @@ public class DepartmentController {
 		return employeeReactiveClient.addEmployee(employee);
 	}
 	
+	@PostConstruct
+	private void initiated() {
+		LOGGER.debug(environmentDetails+" DepartmentController initiated.");
+	}
 	
 }

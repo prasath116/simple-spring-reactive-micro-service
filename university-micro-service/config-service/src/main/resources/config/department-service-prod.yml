@@ -16,8 +16,8 @@ springdoc:
 spring:
   datasource:
     url: jdbc:h2:file:./etc/department-service-h2-db;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: sa
+    username: ${username}
+    password: ${password}
     schema: classpath:/sql/schema.sql
     data: classpath:/sql/data.sql
 #    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
@@ -36,4 +36,4 @@ info:
     environment: ${spring.profiles.active}
     java:
       version: ${java.version}
-environment.details: Native environment
+environment.details: Prod environment

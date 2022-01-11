@@ -1,5 +1,5 @@
 server:
-  port: 8064
+  port: 8065
 
 eureka:
   client:
@@ -11,16 +11,15 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 
 springdoc:
-  packagesToScan: com.prs.services.college
-  
+  packagesToScan: com.prs.services
+
 spring:
   datasource:
-    url: jdbc:h2:file:./etc/college-service-h2-db;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: sa
+    url: jdbc:h2:file:./etc/student-service-h2-db;DB_CLOSE_ON_EXIT=FALSE
+    username: ${username}
+    password: ${password}
     schema: classpath:/sql/schema.sql
     data: classpath:/sql/data.sql
-#    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
   h2: 
     console:
       enabled: true

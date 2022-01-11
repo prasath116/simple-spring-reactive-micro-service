@@ -1,7 +1,6 @@
 package com.prs.services.department.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class EmployeeReactiveClient {
 
-	/*@Autowired
-	@Qualifier("employeeWebClient")
-	private WebClient employeeWebClient;*/
-
 	@Autowired
-	@Qualifier("externalClient")
 	private ExternalClient externalClient;
 
 	public Flux<Employee> findByDepartment(Long departmentId) {
