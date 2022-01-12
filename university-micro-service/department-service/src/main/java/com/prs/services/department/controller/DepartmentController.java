@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +23,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
+@RefreshScope
 public class DepartmentController {
 
 	private static final Logger LOGGER = LogManager.getLogger(DepartmentController.class);
 	
-	@Value("${environment.details}")
-	private String environmentDetails;
+	@Value("${environment.decription}")
+	private String environmentDescription;
 	
 	@Autowired
 	private IDepartmentService service;
@@ -49,6 +51,7 @@ public class DepartmentController {
 	
 	@GetMapping("/findAll")
 	public Flux<Department> findAll() {
+		LOGGER.debug(environmentDescription+"Env .");
 		return service.findAll();
 	}
 	
@@ -77,7 +80,7 @@ public class DepartmentController {
 	
 	@PostConstruct
 	private void initiated() {
-		LOGGER.debug(environmentDetails+" DepartmentController initiated.");
+		LOGGER.debug(environmentDescription+" DepartmentController initiated.");
 	}
 	
 }

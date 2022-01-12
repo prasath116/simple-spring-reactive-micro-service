@@ -36,4 +36,4 @@ info:
     environment: ${spring.profiles.active}
     java:
       version: ${java.version}
-environment.details: Dev environment
+environment.decription: Dev environment

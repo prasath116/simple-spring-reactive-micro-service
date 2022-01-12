@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class BeanConfig {
 	@Bean
 	public ObjectMapper mapper() {
-		System.err.println("ObjectMapper bean initiated");
-	  return new ObjectMapper();
+		return new ObjectMapper();
 	}
 }
