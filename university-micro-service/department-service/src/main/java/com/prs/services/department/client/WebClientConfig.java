@@ -2,6 +2,7 @@ package com.prs.services.department.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ public class WebClientConfig {
 	
 	@Bean
 	@Qualifier("employeeWebClient")
+	@LoadBalanced
 	public WebClient getEmployeeWebClient() {
 		WebClient client = WebClient.builder().baseUrl("http://localhost:8060/employee")
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
