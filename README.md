@@ -7,7 +7,13 @@ To learn Spring Cloud Microservices and other spring modules, I took code from f
 ## Architecture
 Our sample microservice application having following modules:
 ### 1) Config Server
-- **config-service** - A Spring Boot application which uses Spring Cloud Config Server, environment specific configuration files for other services(discovery-service,student-service, etc) are placed on the classpath(*config-service/src/main/resources/config*). *@EnableConfigServer* makes the application as Cloud Config Server. This server should be started first to make other services configuration files ready.
+- **config-service** 
+	- A Spring Boot application which uses Spring Cloud Config Server. *@EnableConfigServer* makes the application as Cloud Config Server. This server should be started first to make other services configuration files ready.
+	- It has environment specific configuration files for other services(discovery-service,student-service, etc). Those files should be in git repositary to utilize the actual purpose of config server. Is there any change in properties, we no need to restart any of the servers. Need to change the properties & push to git repo. After successfull commit we need to reload cache from our business service, where this change should be reflect. 
+	- In My case I updated *environment.details* property in *department-service*. 
+	Beans which are using that properties should be annotated with *@RefreshScope* and to reload the cache we need to hit **/actuator/refresh** with post method. We can understand better by going through *department-service's* dependencies & **DepartmentController** file. 
+	- In my case I am using windows. In windows git repo config url is not working. So i placed environment specific configuration files in the classpath(*config-service/src/main/resources/config*). In this I no need commit, just save & reload cache by **/actuator/refresh** is enough.
+
 <img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/ConfigServer.png" title="Config server setup"><br/>
 ### 2) Netflix Eureka server
 - **discovery-service** - A Spring Cloud Netflix Eureka embedded discovery server. *@EnableEurekaServer* makes the application as Eureka embedded discovery server and in config file need to ensure *eureka.client.registerWithEureka = false,    eureka.client.fetchRegistry = false*
