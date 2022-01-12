@@ -50,6 +50,6 @@ Here is the Discovery server dashboard. Instances currently registered with our 
 	- *username* db username.
 	- *password* db password. Db credentials should be from environment variables for security purpose.
 			<img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/EnvVariables.PNG" title="Environment Variables"><br/>
-- **Swagger** : Swagger2 used.
-- **Web, WebFlux** : To achieve non blocking I/O we are using spring 5 webflux & projectreactor. Flux and Mono.
+- **Swagger** : Swagger2 swagger-ui used. Swagger Ui can be accessed via default swagger-ui endpoint /swagger-ui.html. For department-service it will be http://localhost:8060/department/swagger-ui.html . With this inbuild swager ui we can proceed our test instead of going for postman or any other test client or testing tools.
+- **Web, WebFlux** : To achieve non blocking I/O we are using spring 5 webflux & projectreactor. Flux for more than on object as response and Mono for single object as response.
 - **FeignClient/WebClient** : Spring cloud FeignClient used for normal rest call to connect to external server. Spring 5 reactive WebClient used for non blocking client call to connect to external server.
