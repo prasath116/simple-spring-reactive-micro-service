@@ -20,7 +20,27 @@ Our sample microservice application having following modules:
 - **student-service** - A Spring Boot application that allows to perform CRUD operation on h2 db using spring data repositoryof students.
 - **department-service** -  A Spring Boot application that allows to perform CRUD operation on in-memory repository of departments. It communicates with employee-service. 
 - **college-service** -  A Spring Boot application that allows to perform CRUD operation on in-memory repository of organizations. It communicates with both employee-service and department-service.
-
-
 Here is the Discovery server dashboard. Instances currently registered with our Eureka Discovery server and their statuses
 <img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/DiscoveryServer.png" title="Server status"><br/>
+
+## Technologies used
+	- Java 8
+	- Lombok pluging 
+	- Maven
+	- Spring
+### In Spring following modules we used to explore those 
+- **AOP** : To log the request/ response from client and request/response which we sent to other external server.
+- **Actuator** : 
+- **Cloud** : For over all microservice architecture.
+- **Data JPA** : Spring data jpa to connect with DB. Since all are small service with single table we didn't explore one-one, one-many, many-one, many-many mappings.
+- **Exception Handler** : Yet to do.
+- **H2 DB** : Instead of keeping in cache used h2 DB and stored in local file.
+- **Logs** : Logback used to log.
+- **Profile** : Spring profile used for different environment configuration. Also to run our application we need to add env valiable as shown.
+				- *spring.profiles.active* dev or prod. Based on profile we have done logics in department-service
+				- *username* db username.
+				- *password* db password. Db credentials should be from environment variables for security purpose.
+			<img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/EnvVariables.PNG" title="Environment Variables"><br/>
+- **Swagger** : Swagger2 used.
+- **Web, WebFlux** : To achieve non blocking I/O we are using spring 5 webflux & projectreactor. Flux and Mono.
+- **FeignClient/WebClient** : Spring cloud FeignClient used for normal rest call to connect to external server. Spring 5 reactive WebClient used for non blocking client call to connect to external server.
