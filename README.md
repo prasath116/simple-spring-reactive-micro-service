@@ -37,9 +37,9 @@ Here is the Discovery server dashboard. Instances currently registered with our 
 - **H2 DB** : Instead of keeping in cache used h2 DB and stored in local file.
 - **Logs** : Logback used to log.
 - **Profile** : Spring profile used for different environment configuration. Also to run our application we need to add env valiable as shown.
-				- *spring.profiles.active* dev or prod. Based on profile we have done logics in department-service
-				- *username* db username.
-				- *password* db password. Db credentials should be from environment variables for security purpose.
+	- *spring.profiles.active* dev or prod. Based on profile we have done logics in department-service
+	- *username* db username.
+	- *password* db password. Db credentials should be from environment variables for security purpose.
 			<img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/EnvVariables.PNG" title="Environment Variables"><br/>
 - **Swagger** : Swagger2 used.
 - **Web, WebFlux** : To achieve non blocking I/O we are using spring 5 webflux & projectreactor. Flux and Mono.
