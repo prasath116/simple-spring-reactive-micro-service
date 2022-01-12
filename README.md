@@ -16,9 +16,11 @@ Our sample microservice application having following modules:
 *@EnableDiscoveryClient* makes the application as Discovery Client where this will be registered with our Netflix Eureka server by adding this config eureka.client.serviceUrl.defaultZone=http://localhost:8061/eureka/, **http://localhost:8061** url is our Eureka server url. Following services are Eureka clients which are registered with our *discovery-service*.
 <img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/DiscoveryClientConf.png" title="Discovery client setup"><br/>
 - **gateway-service** - A Spring Boot application that acts as a gateway in our architecture, which recives requests from clients and routes to appropriate services in our micro service.
-- **employee-service** -  A Spring Boot application that allows to perform CRUD operation on h2 db using spring data repository of employees
-- **student-service** - A Spring Boot application that allows to perform CRUD operation on h2 db using spring data repositoryof students
+- **employee-service** -  A Spring Boot application that allows to perform CRUD operation on h2 db using spring data repository of employees.
+- **student-service** - A Spring Boot application that allows to perform CRUD operation on h2 db using spring data repositoryof students.
 - **department-service** -  A Spring Boot application that allows to perform CRUD operation on in-memory repository of departments. It communicates with employee-service. 
 - **college-service** -  A Spring Boot application that allows to perform CRUD operation on in-memory repository of organizations. It communicates with both employee-service and department-service.
 
+
+Here is the Discovery server dashboard. Instances currently registered with our Eureka Discovery server and their statuses
 <img src="https://github.com/prasath116/university-micro-service/blob/master/readme-images/DiscoveryServer.png" title="Server status"><br/>
