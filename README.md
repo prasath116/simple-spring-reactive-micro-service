@@ -32,7 +32,7 @@ Here is the Discovery server dashboard. Instances currently registered with our 
 ### 4) Custom lib
 - **common-utils** - Logger aspect is common for all service. So Generic logger aspect library designed & added in all the services. In future any common things needed for all the business services, we can add it in this common-utils and we can make use of it.
 
-## Technologies used
+## Tools and Technologies used
 	- Java 8
 	- Lombok pluging 
 	- Maven
