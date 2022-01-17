@@ -39,11 +39,11 @@ Here is the Discovery server dashboard. Instances currently registered with our 
 	- Spring
 ### In Spring following modules we used to explore those 
 - **AOP** : To log the request/ response from client and request/response which we sent to other external server.
-- **Actuator** : 
+- **Actuator** : To enable **/actuator/refresh** for relaoding cache. And there are lots of endpoints are there in spring we can check here [actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html).
 - **Cloud** : For over all microservice architecture.
 - **Data JPA** : Spring data jpa to connect with DB. Since all are small service with single table we didn't explore one-one, one-many, many-one, many-many mappings.
 - **Exception Handler** : Yet to do.
-- **H2 DB** : Instead of keeping in cache used h2 DB and stored in local file.
+- **H2 DB** : Instead of keeping in cache, I used h2 DB to learn basics in spring data jpa. Instead of keeping as inmemory DB I stored it in local file to avoid data loss.
 - **Logs** : Logback used to log.
 - **Profile** : Spring profile used for different environment configuration. Also to run our application we need to add env valiable as shown.
 	- *spring.profiles.active* dev or prod. Based on profile we have done logics in department-service
