@@ -12,7 +12,7 @@ Our sample microservice application having following modules:
 	- It has environment specific configuration files for other services(discovery-service,student-service, etc). Those files should be in git repositary to utilize the actual purpose of config server. Is there any change in properties, we no need to restart any of the servers. Need to change the properties & push to git repo. After successfull commit we need to reload cache from our business service, where this change should be reflect. 
 	- In My case I updated *environment.details* property in *department-service*. 
 	Beans which are using that properties should be annotated with *@RefreshScope* and to reload the cache we need to hit **/actuator/refresh** with post method. We can understand better by going through *department-service's* dependencies & **DepartmentController** file. 
-	- In my case I am using windows. In windows git repo config url is not working. So i placed environment specific configuration files in the classpath(*config-service/src/main/resources/config*). In this I no need commit, just save & reload cache by **/actuator/refresh** is enough.
+	- In my case I am using windows. In windows git repo config url is not working. So I placed environment specific configuration files in the classpath(*config-service/src/main/resources/config*). In this I no need commit, just save & reload cache by **/actuator/refresh** is enough.
 
 <img src="https://github.com/prasath116/spring-cloud-micro-service/blob/master/readme-images/ConfigServer.png" title="Config server setup"><br/>
 ### 2) Netflix Eureka server
